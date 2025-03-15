@@ -1,0 +1,33 @@
+<head>
+    <!-- title, scripts (defer), styles link-->
+    <title>To-Do list</title>
+    <script src = "index.js" defer></script>
+    <link rel = "stylesheet" type = "text/css" href = "styles.css">
+</head>
+
+<!-- ADD MENU -->
+<div class="addMenuBackground" id="addMenuBackground">
+    <div class="addMenu">
+        <div class="addMenuRight">
+            <input type="text" class="addMenuBigInput" placeholder="Title">
+            <input type="date" class="addMenuBigInput" placeholder="Date">
+            <div id ="inputContainer">
+                <input type="text" class="addMenuSmallInput" placeholder="task">
+            </div>
+        </div>
+        <div class="addMenuLeft">
+        <span class="taskCounter" id="task">1</span>
+        <button class="addMenuButtonSmall" onclick="taskNumber('+')">▲</button>
+        <button class="addMenuButtonSmall" onclick="taskNumber('-')">▼</button>
+        <button class="addMenuButtonRed" onclick="show('addMenuBackground')">Cancel</button>
+        <button class="addMenuButtonGreen" onclick="show('addMenuBackground')">Add</button>
+        </div>
+    </div>
+</div>
+
+<!-- MENU -->
+<div class="menu">
+    <button class="menuButton">idk</button>
+    <button class="menuButton" onclick="show('addMenuBackground')">Add +</button>
+    <button class="menuButton">Settings</button>
+</div>
