@@ -25,9 +25,21 @@
     </div>
 </div>
 
+<!-- USER MENU (assests reused from add menu) -->
+<div class="addMenuBackground" id="userMenu">
+    <div class="addMenu">
+        <div class="addMenuRight">
+            <input type="text" class="addMenuBigInput" placeholder="Title">
+            <input type="text" class="addMenuBigInput" placeholder="text">
+            <input type="password" class="addMenuSmallInput" placeholder="task">
+            <button class="addMenuButtonRed" onclick="show('userMenu')">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <!-- MENU -->
 <div class="menu">
-    <button class="menuButton">idk</button>
+    <button class="menuButton" onclick="show('userMenu')">User</button>
     <button class="menuButton" onclick="show('addMenuBackground')">Add +</button>
     <button class="menuButton">Settings</button>
 </div>
