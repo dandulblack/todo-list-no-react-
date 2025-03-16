@@ -1,3 +1,6 @@
+console.log("soubor index.js načten");
+
+
 //getting the elements
 let task = 1
 const taskCounter = document.getElementById("task")
