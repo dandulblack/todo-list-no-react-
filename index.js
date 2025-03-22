@@ -1,24 +1,33 @@
-console.log("soubor index.js načten");
+import { firebaseCollection } from "./firebase.js";
+import { firebaseSubCollection } from "./firebase.js";
+import { firebaseRegister } from "./firebase.js";
+import { firebaseLogin } from "./firebase.js";
 
-
-//getting the elements
-let task = 1
-const taskCounter = document.getElementById("task")
-const inputContainer = document.getElementById("inputContainer");
-console.log(`komponent úspěšně načten: ${taskCounter}, ${inputContainer}`)
-
-// function to show/hide components
-function show(id) {
-    let komponent = document.getElementById(id)
-    if (komponent.style.display === "none" || komponent.style.display === "") {
-        komponent.style.display = "flex"
-    } else {
-        komponent.style.display = "none"
-    }
-    console.log(`Komponent ${id} má display: ${komponent.style.display}`)
+try {
+    console.log("soubor index.js načten");
+} catch (e) {
+    console.log(e);
 }
 
-// function to add new input
+// Getting the elements
+let task = 1;
+window.isUserLoggedIn = false;
+const taskCounter = document.getElementById("task");
+const inputContainer = document.getElementById("inputContainer");
+console.log(`komponent úspěšně načten: ${taskCounter}, ${inputContainer}, ${userMenuPlaceholder},`);
+
+// Function to show/hide components
+function show(id) {
+    let komponent = document.getElementById(id);
+    if (komponent.style.display === "none" || komponent.style.display === "") {
+        komponent.style.display = "flex";
+    } else {
+        komponent.style.display = "none";
+    }
+    console.log(`Komponent ${id} má display: ${komponent.style.display}`);
+}
+
+// Function to add new input
 function taskNumber(operator) {
     if (operator === "+") {
         task++;
@@ -41,3 +50,30 @@ function taskNumber(operator) {
 
     console.log(`Počet úkolů byl změněn: ${task}`);
 }
+
+function userMenuChange() {
+    const userMenuPlaceholder = document.getElementById("userMenuPlaceholder");
+    const loginButton = document.getElementById("loginButtonId");
+    const loginNotice = document.getElementById("loginNotice");
+
+    if (userMenuPlaceholder.style.transform === "translateX(-100%)") {
+        userMenuPlaceholder.style.transform = "translateX(0%)";
+        userMenuPlaceholder.style.borderRadius = "0px 27px 27px 0px";
+        loginButton.textContent = "sign up";
+        loginNotice.innerHTML = "<p id='loginNotice'>No account ? <br> sign up instead</p>";
+    } else {
+        userMenuPlaceholder.style.transform = "translateX(-100%)"; 
+        userMenuPlaceholder.style.borderRadius = "27px 0px 0px 27px";  
+        loginButton.textContent = "login";
+        loginNotice.innerHTML = "<p id='loginNotice'>Already have an account ? <br> login instead</p>";
+    }
+}
+
+
+window.show = show;
+window.taskNumber = taskNumber
+window.firebaseCollection = firebaseCollection
+window.firebaseSubCollection = firebaseSubCollection
+window.userMenuChange = userMenuChange
+window.firebaseRegister = firebaseRegister
+window.firebaseLogin = firebaseLogin

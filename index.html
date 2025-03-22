@@ -1,9 +1,7 @@
 <head>
     <!-- title, scripts (defer), firebase, styles link-->
     <title>To-Do list</title>
-    <script src = "index.js" defer></script>
-    <script src="app.js" defer></script>
-    <script src="firebase.js" type="module" defer></script>
+    <script src = "index.js" type="module" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js" type="module" defer></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js" type="module" defer></script>  
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js" type="module" defer></script>
@@ -33,12 +31,38 @@
 
 <!-- USER MENU (assests reused from add menu) -->
 <div class="addMenuBackground" id="userMenu">
-    <div class="addMenu">
-        <div class="addMenuRight">
-            <input type="text" class="addMenuBigInput" placeholder="Title">
-            <input type="text" class="addMenuBigInput" placeholder="text">
-            <input type="password" class="addMenuSmallInput" placeholder="task">
+    <div class="userMenu">
+        <div class="userMenuLogin">
+            <h2> login </h2>
+            <p> username: </p>
+            <input type="username" class="addMenuSmallInput" placeholder="username" id="username">
+            <p> password: </p>
+            <input type="password" class="addMenuSmallInput" placeholder="password" id="password">
+            <span id="loginState" style="color: red; margin-top: 3%;"></span>
+            <div class="container">
             <button class="addMenuButtonRed" onclick="show('userMenu')">Cancel</button>
+            <button class="addMenuButtonGreen" onclick="firebaseLogin()">login</button>
+            </div>
+        </div>
+        <div class="userMenuRegister">
+            <h2> Register </h2>
+            <p> username: </p>
+            <input type="username" class="addMenuSmallInput" placeholder="username" id="makeUsername">
+            <p> password: </p>
+            <input type="password" class="addMenuSmallInput" placeholder="password" id="makePassword">
+            <p> confirm password: </p>
+            <input type="password" class="addMenuSmallInput" placeholder="confirm password" id="makePasswordConfirm">
+            <span id="registrationState" style="color: red; margin-top: 3%;"></span>
+            <div class="container">
+            <button class="addMenuButtonRed" onclick="show('userMenu')">Cancel</button>
+            <button class="addMenuButtonGreen" onclick="firebaseRegister()">Register</button>
+            </div>
+        </div>
+        <div class="userMenuPlaceholder" id="userMenuPlaceholder">
+            <div class="userMenuPlaceholderContainer">
+                <p class='seruNaTo' id="loginNotice">No account ? <br> sign up instead</p>
+                <button class="loginButton" id="loginButtonId" onclick="userMenuChange()">sign up</button>
+            </div>
         </div>
     </div>
 </div>
@@ -47,5 +71,6 @@
 <div class="menu">
     <button class="menuButton" onclick="show('userMenu')">User</button>
     <button class="menuButton" onclick="show('addMenuBackground')">Add +</button>
+    <button class="menuButton" onclick="firebaseSubCollection('jmena', 'dandul', 'dandul-ukoly', 'ukoly', {jmeno: 'dandul', prijmeni: 'blak', ukol: 54})">test</button>
     <button class="menuButton">Settings</button>
 </div>
