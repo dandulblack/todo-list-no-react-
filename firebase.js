@@ -61,7 +61,7 @@ export async function firebaseRegister() {
     } else if (password !== passwordCheck) {
       notice.innerText = "Password does not match!";
       notice.style.color = "red";
-    } else if (password === passwordCheck && name !== "" && password !== "" && !(docSnap.exists())) {
+    } else if (password === passwordCheck && name !== "" && password !== "") {
       await setDoc(doc(getFirestore(), "users", name), {
         name: name,
         password: password,
@@ -81,27 +81,31 @@ export async function firebaseRegister() {
 }
 
 export async function firebaseLogin() {
-  let name = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
-  let loginState = document.getElementById("loginState")
-  const docRef = doc(getFirestore(), "users", name);
+  window.name = document.getElementById("username").value;
+  window.password = document.getElementById("password").value;
+  let loginState = document.getElementById("loginState");
+  const docRef = doc(getFirestore(), "users", window.name);
   const docSnap = await getDoc(docRef);
-
-  if (!(docSnap.exists())){
-    loginState.style.color = "red";
-    loginState.innerText = "user name does not exist !"
-    console.log(`uživatel je přihlášen: ${window.isUserLoggedIn}`)
-  } else if (docSnap.exists()) {
-    let data = docSnap.data();
-    if (data.password === password){
-      loginState.style.color = "green";
-      loginState.innerText = "logged in succesfully"
-      window.isUserLoggedIn = true
-      console.log(`uživatel je přihlášen: ${window.isUserLoggedIn}`)
-    } else if (data.password !== password){
+  const checkbox = document.getElementById("keepLoggedIn")
+  if (!docSnap.exists()) {
       loginState.style.color = "red";
-      loginState.innerText = "incorrect password !"
-      console.log(`uživatel je přihlášen: ${window.isUserLoggedIn}`)
-    }
-  } 
+      loginState.innerText = "User name does not exist!";
+      console.log(`User is logged in: ${window.isUserLoggedIn}`);
+  } else {
+      let data = docSnap.data();
+      if (data.password === window.password) {
+          loginState.style.color = "green";
+          loginState.innerText = "Logged in successfully";
+          window.isUserLoggedIn = true; // Update global variable
+          console.log(`User is logged in: ${window.isUserLoggedIn}`);
+          document.getElementById("loggedNotice").innerText = ""
+          if (checkbox.checked){
+            localStorage.setItem("userInfo", JSON.stringify(window.isUserLoggedIn));
+            localStorage.setItem("userName", window.name)
+          }
+      } else {
+          loginState.style.color = "red";
+          loginState.innerText = "Incorrect password!";
+      }
+  }
 }

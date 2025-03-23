@@ -31,7 +31,7 @@
 
 <!-- USER MENU (assests reused from add menu) -->
 <div class="addMenuBackground" id="userMenu">
-    <div class="userMenu">
+    <div class="userMenu" id="loginRegister">
         <div class="userMenuLogin">
             <h2> login </h2>
             <p> username: </p>
@@ -39,6 +39,8 @@
             <p> password: </p>
             <input type="password" class="addMenuSmallInput" placeholder="password" id="password">
             <span id="loginState" style="color: red; margin-top: 3%;"></span>
+            <p>keep logged in</p>
+            <input type="checkbox" style="width: 10%; height: 10%;" id="keepLoggedIn">
             <div class="container">
             <button class="addMenuButtonRed" onclick="show('userMenu')">Cancel</button>
             <button class="addMenuButtonGreen" onclick="firebaseLogin()">login</button>
@@ -65,6 +67,18 @@
             </div>
         </div>
     </div>
+        <div class="userMenu" id="loggedMenu">
+            <div class="userMenuLogin">
+                <p>Username:</p>
+                <h1 id="usernameInfo">placeholder</h1>
+                <div class="container">
+                <button class="addMenuButtonRed" onclick="logOut()" style="height: 20%;">Log out</button>
+                <button class="addMenuButtonRed" onclick="show('userMenu')">Close</button>
+                </div>
+                <span id="userLogInfo" style="color: red;"></span>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- MENU -->
@@ -73,4 +87,8 @@
     <button class="menuButton" onclick="show('addMenuBackground')">Add +</button>
     <button class="menuButton" onclick="firebaseSubCollection('jmena', 'dandul', 'dandul-ukoly', 'ukoly', {jmeno: 'dandul', prijmeni: 'blak', ukol: 54})">test</button>
     <button class="menuButton">Settings</button>
+</div>
+
+<div class="main" style="margin-left: 20%;">
+    <span id="loggedNotice" style="font-size: 7vw;">Log in to create your first task</span>
 </div>

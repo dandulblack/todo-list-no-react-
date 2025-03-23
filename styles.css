@@ -3,6 +3,8 @@ body{
     background: linear-gradient(90deg, blue, lightgreen);
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: row;
 }
 
 /* Menu */
@@ -26,7 +28,7 @@ body{
     text-align: center;
     text-decoration: none;
     width: 80%;
-    font-size: 90%;
+    font-size: 150%;
     font-family: Arial, Helvetica, sans-serif;
     cursor: pointer;
     display: flex;
@@ -195,7 +197,7 @@ body{
     width: 65%;
     height: 65%;
     background-color: white;
-    display: flex;
+    display: none;
     flex-direction: row;
     border: solid black 3px;
     border-radius: 30px;
@@ -254,4 +256,16 @@ body{
 
 p{
     margin: 5;
+}
+
+#userMenu {
+    display: none; /* Ensure this is the default state */
+}
+
+#loginRegister {
+    display: flex; /* Default state for login menu */
+}
+
+#loggedMenu {
+    display: none; /* Default state for logged-in menu */
 }

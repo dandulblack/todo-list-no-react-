@@ -14,17 +14,49 @@ let task = 1;
 window.isUserLoggedIn = false;
 const taskCounter = document.getElementById("task");
 const inputContainer = document.getElementById("inputContainer");
+if (localStorage.getItem("userName") !== null){
+    window.name = localStorage.getItem("userName")
+} else {
+    window.name = "placeholder"
+}
+if (localStorage.getItem("userInfo") !== null){
+    window.isUserLoggedIn = JSON.parse(localStorage.getItem("userInfo"))
+} else {
+    window.isUserLoggedIn = false
+}
 console.log(`komponent úspěšně načten: ${taskCounter}, ${inputContainer}, ${userMenuPlaceholder},`);
 
 // Function to show/hide components
 function show(id) {
     let komponent = document.getElementById(id);
-    if (komponent.style.display === "none" || komponent.style.display === "") {
+    console.log(`Toggling visibility for: ${id}`);
+    console.log(`isUserLoggedIn: ${window.isUserLoggedIn}`);
+
+    if (id === "userMenu") {
+        if (komponent.style.display === "none" || komponent.style.display === "") {
+            komponent.style.display = "flex";
+        } else {
+            komponent.style.display = "none";
+        }
+
+        let login = document.getElementById("loginRegister");
+        let logged = document.getElementById("loggedMenu");
+
+        if (window.isUserLoggedIn === false) {
+            login.style.display = "flex";
+            logged.style.display = "none";
+        } else if (window.isUserLoggedIn === true) {
+            login.style.display = "none";
+            logged.style.display = "flex";
+            document.getElementById("usernameInfo").innerText = window.name
+        }
+    } else if (komponent.style.display === "none" || komponent.style.display === "") {
         komponent.style.display = "flex";
     } else {
         komponent.style.display = "none";
     }
-    console.log(`Komponent ${id} má display: ${komponent.style.display}`);
+
+    console.log(`Component ${id} display: ${komponent.style.display}`);
 }
 
 // Function to add new input
@@ -69,6 +101,14 @@ function userMenuChange() {
     }
 }
 
+function logOut() {
+    window.isUserLoggedIn = false; 
+    localStorage.setItem("userInfo", JSON.stringify(window.isUserLoggedIn)); 
+    console.log(window.isUserLoggedIn);
+    document.getElementById("userLogInfo").innerText = "log out!";
+    document.getElementById("loginState").innerText = ""
+    document.getElementById("loggedNotice").innerText = "Log in to start making tasks!"
+}
 
 window.show = show;
 window.taskNumber = taskNumber
@@ -77,3 +117,4 @@ window.firebaseSubCollection = firebaseSubCollection
 window.userMenuChange = userMenuChange
 window.firebaseRegister = firebaseRegister
 window.firebaseLogin = firebaseLogin
+window.logOut = logOut
