@@ -2,6 +2,10 @@ import { firebaseCollection } from "./firebase.js";
 import { firebaseSubCollection } from "./firebase.js";
 import { firebaseRegister } from "./firebase.js";
 import { firebaseLogin } from "./firebase.js";
+import { addTask } from "./firebase.js";
+import { getTasks } from "./firebase.js";
+import { deleteTask } from "./firebase.js";
+import { changeStatus } from "./firebase.js";
 
 try {
     console.log("soubor index.js načten");
@@ -10,20 +14,19 @@ try {
 }
 
 // Getting the elements
-let task = 1;
+window.task = 1;
 window.isUserLoggedIn = false;
 const taskCounter = document.getElementById("task");
 const inputContainer = document.getElementById("inputContainer");
-if (localStorage.getItem("userName") !== null){
-    window.name = localStorage.getItem("userName")
+const grid = document.getElementById("taskShower")
+console.log(grid)
+if (localStorage.getItem("userName") !== "null"){
+    window.name = localStorage.getItem("userName");
+    isUserLoggedIn = true
 } else {
     window.name = "placeholder"
 }
-if (localStorage.getItem("userInfo") !== null){
-    window.isUserLoggedIn = JSON.parse(localStorage.getItem("userInfo"))
-} else {
-    window.isUserLoggedIn = false
-}
+
 console.log(`komponent úspěšně načten: ${taskCounter}, ${inputContainer}, ${userMenuPlaceholder},`);
 
 // Function to show/hide components
@@ -62,25 +65,38 @@ function show(id) {
 // Function to add new input
 function taskNumber(operator) {
     if (operator === "+") {
-        task++;
-    } else if (operator === "-" && task > 0) {
-        task--;
+        window.task++;
+    } else if (operator === "-" && window.task > 0) {
+        window.task--;
     }
-    taskCounter.innerText = task;
+    taskCounter.innerText = window.task;
 
-    // Clear existing inputs before adding new ones
+    // Uložit existující hodnoty
+    let savedTasks = {};
+    document.querySelectorAll(".addMenuSmallInput").forEach(input => {
+        savedTasks[input.id] = input.value;
+    });
+
+    // Vyčistit kontejner
     inputContainer.innerHTML = "";
 
-    // Create new input elements based on the value of task
-    for (let i = 0; i < task; i++) {
+    // Vytvořit nové inputy se zachovanými hodnotami
+    for (let i = 1; i <= window.task; i++) {
         const input = document.createElement("input");
         input.type = "text";
         input.className = "addMenuSmallInput";
         input.placeholder = "task";
-        inputContainer.appendChild(input); // Add each input to the container
+        input.id = `task-${i}`;
+
+        // Obnovit hodnotu, pokud existovala
+        if (savedTasks[input.id]) {
+            input.value = savedTasks[input.id];
+        }
+
+        inputContainer.appendChild(input);
     }
 
-    console.log(`Počet úkolů byl změněn: ${task}`);
+    console.log(`Počet úkolů byl změněn: ${window.task}`);
 }
 
 function userMenuChange() {
@@ -103,18 +119,77 @@ function userMenuChange() {
 
 function logOut() {
     window.isUserLoggedIn = false; 
-    localStorage.setItem("userInfo", JSON.stringify(window.isUserLoggedIn)); 
+    localStorage.setItem("userName", "null"); 
     console.log(window.isUserLoggedIn);
     document.getElementById("userLogInfo").innerText = "log out!";
-    document.getElementById("loginState").innerText = ""
-    document.getElementById("loggedNotice").innerText = "Log in to start making tasks!"
+    document.getElementById("loginState").innerText = " "
 }
 
+async function showTasks() {
+    if (isUserLoggedIn) {
+        let tasks = await getTasks();
+        console.log(tasks);
+        grid.innerHTML = "";
+
+        tasks.forEach((element, index) => {
+            // creating the task
+            let task = document.createElement("div");
+            task.className = "task";
+            task.id = `${index}`;
+            
+            // task title
+            let taskHeader = document.createElement("header");
+            taskHeader.className = "taskHeader";
+            taskHeader.id = `header-${index}`
+            taskHeader.innerHTML = `
+                ${element.title} 
+                <button class="deleteButton" onclick="deleteTask('${task.id}')">delete</button>
+            `;
+            task.appendChild(taskHeader);
+
+            // making the tasks
+            element.tasks.forEach((singleTask, index) => {
+                let taskPart = document.createElement("p");
+                taskPart.className = "taskText";
+                taskPart.id = `single-task${index}`;
+            
+                if (singleTask.status === "incopleted") {
+                    taskPart.innerHTML = `${singleTask.task} <p>status: <button class="completionButton" onclick="changeStatus('${taskPart.id}', '${element.title}')">✖</button></p>`;
+
+                    task.appendChild(taskPart);
+                } else {
+                }
+            });
+
+            // task end
+            let taskFooter = document.createElement("footer");
+            taskFooter.className = "taskFooter";
+            taskFooter.innerText = element.date;
+            task.appendChild(taskFooter);
+
+            // putting it to the grid
+            grid.appendChild(task);
+        });
+    } else {
+        let task = document.createElement("div");
+        task.innerText = "LOG IN FIRST!";
+        grid.appendChild(task);
+    }
+}
+
+window.getTasks = getTasks
 window.show = show;
 window.taskNumber = taskNumber
 window.firebaseCollection = firebaseCollection
 window.firebaseSubCollection = firebaseSubCollection
 window.userMenuChange = userMenuChange
+window.logOut = logOut
+window.addTask = addTask
+window.showTasks = showTasks
+window.deleteTask = deleteTask
 window.firebaseRegister = firebaseRegister
 window.firebaseLogin = firebaseLogin
-window.logOut = logOut
+window.deleteTask = deleteTask
+window.changeStatus = changeStatus
+
+showTasks()

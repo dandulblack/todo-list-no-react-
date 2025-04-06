@@ -13,10 +13,10 @@
 <div class="addMenuBackground" id="addMenuBackground">
     <div class="addMenu">
         <div class="addMenuRight">
-            <input type="text" class="addMenuBigInput" placeholder="Title">
-            <input type="date" class="addMenuBigInput" placeholder="Date">
+            <input type="text" id="title" class="addMenuBigInput" placeholder="Title">
+            <input type="date" id="date" class="addMenuBigInput" placeholder="Date">
             <div id ="inputContainer">
-                <input type="text" class="addMenuSmallInput" placeholder="task">
+                <input type="text" id="task-1" class="addMenuSmallInput" placeholder="task">
             </div>
         </div>
         <div class="addMenuLeft">
@@ -24,7 +24,7 @@
         <button class="addMenuButtonSmall" onclick="taskNumber('+')">▲</button>
         <button class="addMenuButtonSmall" onclick="taskNumber('-')">▼</button>
         <button class="addMenuButtonRed" onclick="show('addMenuBackground')">Cancel</button>
-        <button class="addMenuButtonGreen" onclick="show('addMenuBackground')">Add</button>
+        <button class="addMenuButtonGreen" onclick="addTask()">Add</button>
         </div>
     </div>
 </div>
@@ -72,8 +72,8 @@
                 <p>Username:</p>
                 <h1 id="usernameInfo">placeholder</h1>
                 <div class="container">
-                <button class="addMenuButtonRed" onclick="logOut()" style="height: 20%;">Log out</button>
-                <button class="addMenuButtonRed" onclick="show('userMenu')">Close</button>
+                <button class="addMenuButtonRed" id="userMenuButton" onclick="logOut()" style="height: 20%;">Log out</button>
+                <button class="addMenuButtonRed" id="userMenuButton" onclick="show('userMenu')">Close</button>
                 </div>
                 <span id="userLogInfo" style="color: red;"></span>
             </div>
@@ -85,10 +85,9 @@
 <div class="menu">
     <button class="menuButton" onclick="show('userMenu')">User</button>
     <button class="menuButton" onclick="show('addMenuBackground')">Add +</button>
-    <button class="menuButton" onclick="firebaseSubCollection('jmena', 'dandul', 'dandul-ukoly', 'ukoly', {jmeno: 'dandul', prijmeni: 'blak', ukol: 54})">test</button>
+    <button class="menuButton" onclick="showTasks()">test</button>
     <button class="menuButton">Settings</button>
 </div>
 
-<div class="main" style="margin-left: 20%;">
-    <span id="loggedNotice" style="font-size: 7vw;">Log in to create your first task</span>
+<div class="main" id="taskShower">
 </div>

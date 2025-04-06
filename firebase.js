@@ -3,7 +3,7 @@ console.log("soubor firebase.js načten");
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { doc, setDoc, getDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { Timestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 
@@ -98,7 +98,7 @@ export async function firebaseLogin() {
           loginState.innerText = "Logged in successfully";
           window.isUserLoggedIn = true; // Update global variable
           console.log(`User is logged in: ${window.isUserLoggedIn}`);
-          document.getElementById("loggedNotice").innerText = ""
+          document.getElementById("loginNotice").innerText = " "
           if (checkbox.checked){
             localStorage.setItem("userInfo", JSON.stringify(window.isUserLoggedIn));
             localStorage.setItem("userName", window.name)
@@ -108,4 +108,76 @@ export async function firebaseLogin() {
           loginState.innerText = "Incorrect password!";
       }
   }
+}
+
+export async function addTask() {
+  if (!window.name) {
+    console.error("User name is undefined or empty.");
+    return;
+  }
+
+  let documentRef = doc(db, "users", window.name);
+  let subcollectionRef = collection(documentRef, "tasks");
+
+  let title = document.getElementById("title").value;
+  let date = document.getElementById("date").value;
+
+  let tasks = [];
+  for (let i = 1; i < window.task + 1; i++) {
+    let taskValue = document.getElementById(`task-${i}`).value;
+    let task = {task: taskValue, status: "incopleted"}
+    tasks.push(task);
+    console.log(`task-${i}:`, taskValue);
+  }
+
+  let data = {
+    title: title,
+    date: date,
+    tasks: tasks
+  };
+
+  console.log(data);
+
+  try {
+    // Používáme setDoc místo addDoc a nastavujeme title jako ID dokumentu
+    const docRef = doc(subcollectionRef, title); // Nastavíme title jako ID dokumentu
+    await setDoc(docRef, data); // Vytvoří dokument s ID title a uloží data
+    console.log("Dokument byl úspěšně přidán s ID:", title);
+  } catch (e) {
+    console.error("Chyba při přidávání dokumentu: ", e);
+  }
+}
+
+export async function getTasks() {
+  const tasksRef = collection(db, "users", window.name, "tasks"); 
+  const documents = await getDocs(tasksRef);
+  let tasks = []
+  documents.forEach(function (doc) {
+    tasks.push({ id: doc.id, ...doc.data() });
+  });
+  console.log(tasks)
+  return tasks
+}
+
+export async function deleteTask(id) {
+  console.log(id);
+  console.log("Window Name:", JSON.stringify(window.name));
+  let docId = (document.getElementById(`header-${id}`).innerText.replace("delete", "")).trim();
+  let ref = doc(db, "users", window.name, "tasks", docId);
+  let snapshot = await getDoc(ref);
+  if (snapshot.exists()){
+  try {  
+    await deleteDoc(doc(db, "users", window.name, "tasks", docId));  
+    console.log("Dokument úspěšně smazán" + docId);  
+    showTasks()
+  } catch (error) {  
+    console.error("Chyba při mazání dokumentu:", error);  
+  } 
+  } else {
+    console.log("dokument neexistuje")
+  } 
+}
+
+export async function changeStatus(task, doc) {
+  console.log(task + "  " +  doc)
 }

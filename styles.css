@@ -100,7 +100,7 @@ body{
     border-radius: 5px;
     border: solid black 2px;
     background-color: rgba(185, 185, 185, 0.5);
-    margin-top: 0px;
+    margin-top: 10px;
 }
 
 /* Add menu left column */
@@ -254,7 +254,8 @@ body{
     border-radius: 27px 0px 0px 27px;
 }
 
-p{
+/*I DONT FUCKING KNOW BRO*/
+p {
     margin: 5;
 }
 
@@ -268,4 +269,93 @@ p{
 
 #loggedMenu {
     display: none; /* Default state for logged-in menu */
+}
+
+#loggedMenu {
+    justify-content: center;
+    align-items: center;
+}
+
+#userMenuButton {
+    height: 100%;
+}
+
+/*SHOWING TASKS*/
+.main{
+    width: 72%;
+    margin-left: 20%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    position: absolute;
+    padding: 4%;
+    gap: 4%
+}
+
+.task {
+    font-size: large;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: gray;
+    color: black;
+    padding: 20px;
+    margin-top: 4% ;
+    display: flex;
+    flex-direction: column;
+}
+
+.taskHeader {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    max-width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.taskText {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: large;
+    display: flex;
+    max-width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.taskFooter {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.completionButton {
+    background-color: #ff0000;
+    border: none;
+    font-size: large;
+    border-radius: 4px;
+    transition: background-color 0.4s;
+}
+
+.completionButton:hover {
+    background-color: #00ff00;
+    cursor: pointer;
+}
+
+.deleteButton {
+    font-size: large;
+    border: none;
+    background-color: lightgray;
+    cursor: pointer;
+    transition: background-color 0.4s, color 0.4s;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+.deleteButton:hover {
+    background-color: black;
+    color: white;
 }
